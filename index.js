@@ -1,13 +1,15 @@
 import express from "express";
+import getMemes from "./utilities/reddit.js";
 
 const app = express();
+app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send({"message": "Hello World"});
 })
 
-app.get("/meme", async function(req, res) {
-    
+app.get("/meme/:subreddit", async function(req, res) {
+    res.send(await getMemes(req.params.subreddit));
 });
 
 app.listen("8000", () => {
