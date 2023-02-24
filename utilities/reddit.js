@@ -5,7 +5,7 @@ async function getMemes(subreddit, index = Math.floor(Math.random() * 25)) {
     if (!(subreddit in cache)) {
         console.log(`\n\nRequest sent to ${subreddit}`);
         const response = await fetch(`https://reddit.com/r/${subreddit}.json`);
-        data = await response.json();        
+        data = await response.json();
         cache[subreddit] = data;
     } else {
         data = cache[subreddit];
@@ -13,6 +13,9 @@ async function getMemes(subreddit, index = Math.floor(Math.random() * 25)) {
     return data?.data?.children.map(({ data }) => ({
         title: data.title,
         url: data.url,
-    }))[index] || {title: "No memes found", url: ""};
+        postLink: data.permalink,
+        author: data.author,
+        ups: data.ups
+    }))[index] || { title: "No memes found", url: "", postLink: "", author: "", ups: "" };
 }
 export default getMemes;
